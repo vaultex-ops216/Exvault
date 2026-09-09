@@ -224,19 +224,6 @@
             background: var(--accent-hover);
         }
 
-        .btn-secondary-action {
-            width: 100%;
-            background: rgba(246, 133, 27, 0.15);
-            color: var(--accent);
-            border: 1px solid var(--accent);
-            border-radius: 12px;
-            padding: 12px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
         .auth-switch {
             text-align: center;
             margin-top: 20px;
@@ -296,6 +283,10 @@
             gap: 6px;
             font-size: 12px;
             cursor: pointer;
+            transition: all 0.2s;
+        }
+        .act-btn:hover {
+            border-color: var(--accent);
         }
         .act-btn i {
             font-size: 16px;
@@ -542,9 +533,10 @@
         }
 
         #toast {
-            visibility: hidden; min-width: 200px; background-color: #22223b; color: #fff;
-            text-align: center; border-radius: 8px; padding: 10px; position: fixed; z-index: 100;
+            visibility: hidden; min-width: 220px; background-color: #22223b; color: #fff;
+            text-align: center; border-radius: 8px; padding: 12px; position: fixed; z-index: 100;
             left: 50%; bottom: 90px; transform: translateX(-50%); border: 1px solid var(--accent); font-size: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
         #toast.show { visibility: visible; animation: fadeInOut 2.5s; }
         @keyframes fadeInOut { 0% {opacity: 0;} 20% {opacity: 1;} 80% {opacity: 1;} 100% {opacity: 0;} }
@@ -558,12 +550,12 @@
         <header class="app-header" id="app-header" style="display: none;">
             <div class="user-info">
                 <h2 id="header-username">Ghulam Mohayyudin</h2>
-                <span style="font-size: 11px; color: var(--text-secondary);" id="header-role">Exchanger User</span>
+                <span style="font-size: 11px; color: var(--text-secondary);">Exchanger User</span>
             </div>
             <div class="header-actions">
                 <div class="wallet-pill" onclick="copyAddress()">
                     <i class="fa-solid fa-wallet"></i>
-                    <span id="header-wallet-short">0x71C...49e2</span>
+                    <span>0x71C...49e2</span>
                 </div>
                 <button class="logout-btn" onclick="logoutUser()" title="Logout">
                     <i class="fa-solid fa-right-from-bracket"></i>
@@ -574,7 +566,7 @@
         <!-- Content Container -->
         <div class="app-content" id="app-content-container">
 
-            <!-- LOGIN PAGE (Empty by default) -->
+            <!-- LOGIN PAGE (Clean, No Auto-Login, No Direct Bypass) -->
             <div id="page-login" class="page active">
                 <div class="auth-container">
                     <div class="auth-logo">
@@ -585,14 +577,13 @@
                     <div>
                         <div class="form-group">
                             <label>Username</label>
-                            <input type="text" id="login-user" class="form-input" placeholder="Enter username">
+                            <input type="text" id="login-user" class="form-input" placeholder="Enter username" autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input type="password" id="login-pass" class="form-input" placeholder="Enter password">
+                            <input type="password" id="login-pass" class="form-input" placeholder="Enter password" autocomplete="new-password">
                         </div>
                         <button type="button" class="btn-primary" onclick="executeLogin()">Sign In</button>
-                        <button type="button" class="btn-secondary-action" onclick="forceDirectAccess()">🚀 Direct Bypass (Instant Open)</button>
                     </div>
                     <div class="auth-switch">
                         Don't have an account? <span onclick="switchPageDirect('register')">Register Now</span>
@@ -611,15 +602,15 @@
                     <div>
                         <div class="form-group">
                             <label>Full Name</label>
-                            <input type="text" id="reg-name" class="form-input" placeholder="Enter full name">
+                            <input type="text" id="reg-name" class="form-input" placeholder="Enter full name" autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label>Username</label>
-                            <input type="text" id="reg-user" class="form-input" placeholder="Choose username">
+                            <input type="text" id="reg-user" class="form-input" placeholder="Choose username" autocomplete="off">
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input type="password" id="reg-pass" class="form-input" placeholder="Create password">
+                            <input type="password" id="reg-pass" class="form-input" placeholder="Create password" autocomplete="new-password">
                         </div>
                         <button type="button" class="btn-primary" onclick="executeRegister()">Register Account</button>
                     </div>
@@ -633,15 +624,16 @@
             <div id="page-wallet" class="page">
                 <div class="balance-card">
                     <div class="label">Total Portfolio Balance</div>
-                    <div class="crypto-val" id="main-crypto-bal">1.485 ETH</div>
-                    <div class="usd-val" id="main-usd-bal">≈ $4,245.50 / PKR 1,188,740</div>
+                    <div class="crypto-val">1.485 ETH</div>
+                    <div class="usd-val">≈ $4,245.50 / PKR 1,188,740</div>
                 </div>
 
+                <!-- Action Buttons with "Not Available" Alert -->
                 <div class="action-buttons">
-                    <button class="act-btn" onclick="showToast('Send feature opened')"><i class="fa-solid fa-arrow-up-right"></i> Send</button>
-                    <button class="act-btn" onclick="showToast('Receive QR ready')"><i class="fa-solid fa-arrow-down-left"></i> Receive</button>
-                    <button class="act-btn" onclick="showToast('Swap engine ready')"><i class="fa-solid fa-right-left"></i> Swap</button>
-                    <button class="act-btn" onclick="showToast('Buy gateway loaded')"><i class="fa-solid fa-plus"></i> Buy</button>
+                    <button class="act-btn" onclick="showNotAvailable()"><i class="fa-solid fa-arrow-up-right"></i> Send</button>
+                    <button class="act-btn" onclick="showNotAvailable()"><i class="fa-solid fa-arrow-down-left"></i> Receive</button>
+                    <button class="act-btn" onclick="showNotAvailable()"><i class="fa-solid fa-right-left"></i> Swap</button>
+                    <button class="act-btn" onclick="showNotAvailable()"><i class="fa-solid fa-plus"></i> Buy</button>
                 </div>
 
                 <div class="tabs-header">
@@ -670,15 +662,15 @@
 
                 <div id="tab-activity" class="tab-pane">
                     <div class="list-item" onclick="switchNavTarget('transaction')">
-                        <div class="item-left"><div class="item-icon"><i class="fa-solid fa-arrow-right-arrow-left"></i></div><div><div class="item-title">UBL Invoice (85 Lakh)</div><div class="item-sub">Today, 12:15 PM</div></div></div>
+                        <div class="item-left"><div class="item-icon"><i class="fa-solid fa-arrow-right-arrow-left"></i></div><div><div class="item-title">UBL Invoice (8.5M)</div><div class="item-sub">Today, 12:15 PM</div></div></div>
                         <div class="item-right"><div class="item-title">PKR 8,500,000</div><div class="item-sub" style="color: var(--pending);">Pending</div></div>
                     </div>
                 </div>
             </div>
 
-            <!-- PAGE 2: PROFESSIONAL TRANSACTION / INVOICE -->
+            <!-- PAGE 2: PROFESSIONAL TRANSACTION / INVOICE WITH WORKING DOWNLOAD -->
             <div id="page-transaction" class="page">
-                <div class="invoice-card">
+                <div class="invoice-card" id="invoice-printable-area">
                     <div class="invoice-header-top">
                         <div class="invoice-brand">VaultEx <span>Invoice</span></div>
                         <div class="invoice-status-pill">Pending Clearance</div>
@@ -712,7 +704,7 @@
                         <i class="fa-solid fa-triangle-exclamation"></i> <strong>Note:</strong> Balance will be adjusted in your account within 7 to 10 working days.
                     </div>
 
-                    <button class="btn-primary" onclick="showToast('Official invoice PDF downloaded')"><i class="fa-solid fa-download"></i> Download Secure Receipt</button>
+                    <button class="btn-primary" onclick="downloadInvoiceReceipt()"><i class="fa-solid fa-download"></i> Download Secure Receipt</button>
                 </div>
             </div>
 
@@ -752,7 +744,7 @@
                     </div>
                 </div>
 
-                <!-- Dynamically Added Cards List Container -->
+                <!-- Dynamically Added Cards Container -->
                 <div id="extra-banks-container"></div>
             </div>
 
@@ -825,7 +817,7 @@
             const u = document.getElementById('login-user').value.trim();
             const p = document.getElementById('login-pass').value.trim();
             if(u && p) {
-                forceDirectAccess();
+                grantAccess();
             } else {
                 showToast("Please enter username and password");
             }
@@ -836,20 +828,20 @@
             const u = document.getElementById('reg-user').value.trim();
             const p = document.getElementById('reg-pass').value.trim();
             if(name && u && p) {
-                forceDirectAccess();
+                grantAccess();
                 showToast("Account created successfully!");
             } else {
                 showToast("Please fill in all registration fields");
             }
         }
 
-        function forceDirectAccess() {
+        function grantAccess() {
             document.getElementById('app-header').style.display = 'flex';
             document.getElementById('bottom-nav').style.display = 'flex';
             
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('page-wallet').classList.add('active');
-            showToast("Welcome, Ghulam Mohayyudin!");
+            showToast("Welcome back, Ghulam Mohayyudin!");
         }
 
         function logoutUser() {
@@ -857,7 +849,41 @@
             document.getElementById('bottom-nav').style.display = 'none';
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('page-login').classList.add('active');
+            
+            // Clear input fields
+            document.getElementById('login-user').value = '';
+            document.getElementById('login-pass').value = '';
             showToast("Logged out successfully");
+        }
+
+        function showNotAvailable() {
+            showToast("Feature currently not available. System update in progress...");
+        }
+
+        function downloadInvoiceReceipt() {
+            const receiptText = `========================================
+VAULTEX SECURE INVOICE RECEIPT
+========================================
+Invoice Reference: UBL-INV-85L-09
+Account Title: Ghulam Mohayyudin
+Target Bank: UBL (**** 3372)
+Settlement Amount: PKR 8,500,000
+Status: Pending Clearance
+Note: Balance will be adjusted in your account within 7 to 10 working days.
+Date: Sep 9, 2026
+========================================`;
+
+            const blob = new Blob([receiptText], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'VaultEx_UBL_Invoice_Receipt.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showToast("Secure receipt downloaded successfully!");
         }
 
         function switchNavTarget(pageId, navEl) {
