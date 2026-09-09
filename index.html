@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VaultEx — Crypto Wallet & Exchanger</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0f1016;
+            --bg-card: #1a1a2e;
+            --bg-card-hover: #22223b;
+            --accent: #f6851b;
+            --accent-hover: #e2761b;
+            --text-primary: #ffffff;
+            --text-secondary: #94a3b8;
+            --border-color: #2a2a40;
+            --success: #10b981;
+            --pending: #f59e0b;
+            --failed: #ef4444;
+            
+            --ubl-bg: linear-gradient(135deg, #003366, #1c4e80);
+            --hbl-bg: linear-gradient(135deg, #00563f, #00845c);
+            --alfalah-bg: linear-gradient(135deg, #8b0000, #b22222);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            height: 90vh;
+            max-height: 850px;
+            background-color: var(--bg-card);
+            border-radius: 28px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            position: relative;
+        }
+
+        .app-header {
+            padding: 16px 20px;
+            background-color: rgba(26, 26, 46, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .user-info h2 {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .wallet-pill {
+            background: rgba(246, 133, 27, 0.1);
+            border: 1px solid rgba(246, 133, 27, 0.3);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--failed);
+            padding: 6px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .app-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            scrollbar-width: none;
+        }
+        .app-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+
+        .bottom-nav {
+            height: 70px;
+            background-color: rgba(15, 16, 22, 0.98);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .nav-item i {
+            font-size: 18px;
+        }
+
+        .nav-item.active, .nav-item:hover {
+            color: var(--accent);
+        }
+
+        /* AUTH STYLES */
+        .auth-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            padding: 10px;
+        }
+
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .auth-logo i {
+            font-size: 40px;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .auth-logo h1 {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .auth-logo p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 14px;
+            color: var(--text-primary);
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent);
+        }
+
+        .btn-primary {
+            width: 100%;
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-secondary-action {
+            width: 100%;
+            background: rgba(246, 133, 27, 0.15);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .auth-switch span {
+            color: var(--accent);
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* WALLET & OTHER PAGES */
+        .balance-card {
+            background: linear-gradient(145deg, #22223b, #1a1a2e);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .balance-card .label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .balance-card .crypto-val {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .balance-card .usd-val {
+            font-size: 14px;
+            color: var(--accent);
+            margin-top: 4px;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .act-btn {
+            background-color: var(--bg-card-hover);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 12px 0;
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .act-btn i {
+            font-size: 16px;
+            color: var(--accent);
+        }
+
+        .tabs-header {
+            display: flex;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 16px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            padding-bottom: 10px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tab-btn.active {
+            color: var(--text-primary);
+        }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent);
+        }
+
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 14px;
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            margin-bottom: 10px;
+        }
+
+        .item-left { display: flex; align-items: center; gap: 12px; }
+        .item-icon {
+            width: 38px; height: 38px; border-radius: 50%;
+            background: var(--bg-card-hover);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; color: var(--accent);
+        }
+        .item-title { font-size: 14px; font-weight: 600; }
+        .item-sub { font-size: 12px; color: var(--text-secondary); }
+        .item-right { text-align: right; }
+
+        /* TX & BANKS */
+        .tx-status-banner {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .status-badge.success { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+        .status-badge.pending { background: rgba(245, 158, 11, 0.15); color: var(--pending); }
+
+        .detail-group {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        .detail-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-size: 13px;
+        }
+        .detail-label { color: var(--text-secondary); }
+
+        .bank-card-ui {
+            border-radius: 18px; padding: 20px; color: white; margin-bottom: 16px;
+        }
+        .bank-ubl { background: var(--ubl-bg); }
+        .bank-hbl { background: var(--hbl-bg); }
+        .bank-alfalah { background: var(--alfalah-bg); }
+
+        .bank-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .bank-name { font-size: 15px; font-weight: 700; }
+        .bank-number { font-size: 14px; font-family: monospace; margin-bottom: 14px; }
+        .bank-footer-row { display: flex; justify-content: space-between; align-items: flex-end; }
+        .bank-balance-lbl { font-size: 11px; opacity: 0.8; }
+        .bank-balance-amt { font-size: 17px; font-weight: 700; }
+
+        .note-banner {
+            background: rgba(246, 133, 27, 0.08);
+            border: 1px dashed rgba(246, 133, 27, 0.4);
+            padding: 12px; border-radius: 14px; font-size: 12px; color: #ffd8b1; margin-bottom: 16px;
+        }
+
+        #toast {
+            visibility: hidden; min-width: 200px; background-color: #22223b; color: #fff;
+            text-align: center; border-radius: 8px; padding: 10px; position: fixed; z-index: 100;
+            left: 50%; bottom: 90px; transform: translateX(-50%); border: 1px solid var(--accent); font-size: 12px;
+        }
+        #toast.show { visibility: visible; animation: fadeInOut 2.5s; }
+        @keyframes fadeInOut { 0% {opacity: 0;} 20% {opacity: 1;} 80% {opacity: 1;} 100% {opacity: 0;} }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Header -->
+        <header class="app-header" id="app-header" style="display: none;">
+            <div class="user-info">
+                <h2 id="header-username">Ghulam Mohayyudin</h2>
+                <span style="font-size: 11px; color: var(--text-secondary);" id="header-role">Exchanger User</span>
+            </div>
+            <div class="header-actions">
+                <div class="wallet-pill" onclick="copyAddress()">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span id="header-wallet-short">0x71C...49e2</span>
+                </div>
+                <button class="logout-btn" onclick="logoutUser()" title="Logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Content Container -->
+        <div class="app-content" id="app-content-container">
+
+            <!-- LOGIN PAGE -->
+            <div id="page-login" class="page active">
+                <div class="auth-container">
+                    <div class="auth-logo">
+                        <i class="fa-solid fa-vault"></i>
+                        <h1>VaultEx Portal</h1>
+                        <p>Sign in to access your secure wallet</p>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" id="login-user" class="form-input" value="Mohayyu78">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="login-pass" class="form-input" value="Mohayyu@78">
+                        </div>
+                        <button type="button" class="btn-primary" onclick="executeLogin()">Sign In</button>
+                        <button type="button" class="btn-secondary-action" onclick="forceDirectAccess()">🚀 Direct Bypass (Instant Open)</button>
+                    </div>
+                    <div class="auth-switch">
+                        Don't have an account? <span onclick="switchPageDirect('register')">Register Now</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- REGISTER PAGE -->
+            <div id="page-register" class="page">
+                <div class="auth-container">
+                    <div class="auth-logo">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <h1>Create Account</h1>
+                        <p>Join VaultEx crypto exchange</p>
+                    </div>
+                    <div>
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="reg-name" class="form-input" placeholder="Enter full name">
+                        </div>
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" id="reg-user" class="form-input" placeholder="Choose username">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="reg-pass" class="form-input" placeholder="Create password">
+                        </div>
+                        <button type="button" class="btn-primary" onclick="executeRegister()">Register Account</button>
+                    </div>
+                    <div class="auth-switch">
+                        Already have an account? <span onclick="switchPageDirect('login')">Sign In</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 1: WALLET -->
+            <div id="page-wallet" class="page">
+                <div class="balance-card">
+                    <div class="label">Total Portfolio Balance</div>
+                    <div class="crypto-val" id="main-crypto-bal">1.485 ETH</div>
+                    <div class="usd-val" id="main-usd-bal">≈ $4,245.50 / PKR 1,188,740</div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="act-btn" onclick="showToast('Send feature opened')"><i class="fa-solid fa-arrow-up-right"></i> Send</button>
+                    <button class="act-btn" onclick="showToast('Receive QR ready')"><i class="fa-solid fa-arrow-down-left"></i> Receive</button>
+                    <button class="act-btn" onclick="showToast('Swap engine ready')"><i class="fa-solid fa-right-left"></i> Swap</button>
+                    <button class="act-btn" onclick="showToast('Buy gateway loaded')"><i class="fa-solid fa-plus"></i> Buy</button>
+                </div>
+
+                <div class="tabs-header">
+                    <button class="tab-btn active" onclick="switchTab(event, 'tab-tokens')">Tokens</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'tab-nfts')">NFTs</button>
+                    <button class="tab-btn" onclick="switchTab(event, 'tab-activity')">Activity</button>
+                </div>
+
+                <div id="tab-tokens" class="tab-pane active">
+                    <div class="list-item">
+                        <div class="item-left"><div class="item-icon"><i class="fa-brands fa-ethereum"></i></div><div><div class="item-title">Ethereum</div><div class="item-sub">ETH</div></div></div>
+                        <div class="item-right"><div class="item-title">1.485 ETH</div><div class="item-sub">$4,245.50</div></div>
+                    </div>
+                    <div class="list-item">
+                        <div class="item-left"><div class="item-icon"><i class="fa-solid fa-dollar-sign"></i></div><div><div class="item-title">Tether USD</div><div class="item-sub">USDT</div></div></div>
+                        <div class="item-right"><div class="item-title">1,250.00 USDT</div><div class="item-sub">$1,250.00</div></div>
+                    </div>
+                </div>
+
+                <div id="tab-nfts" class="tab-pane">
+                    <div class="list-item">
+                        <div class="item-left"><div class="item-icon"><i class="fa-solid fa-image"></i></div><div><div class="item-title">Ape Vault #482</div><div class="item-sub">Bored Ape Club</div></div></div>
+                        <div class="item-right"><div class="item-title" style="color:var(--accent);">1.2 ETH</div><div class="item-sub">Floor Price</div></div>
+                    </div>
+                </div>
+
+                <div id="tab-activity" class="tab-pane">
+                    <div class="list-item" onclick="switchNavTarget('transaction')">
+                        <div class="item-left"><div class="item-icon"><i class="fa-solid fa-arrow-right-arrow-left"></i></div><div><div class="item-title">UBL Invoice (85 Lakh)</div><div class="item-sub">Today, 12:15 PM</div></div></div>
+                        <div class="item-right"><div class="item-title">PKR 8,500,000</div><div class="item-sub" style="color: var(--pending);">Pending</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE 2: TRANSACTION DETAIL -->
+            <div id="page-transaction" class="page">
+                <div class="tx-status-banner">
+                    <div class="status-badge pending">Pending</div>
+                    <div style="font-size: 24px; font-weight: 700;">PKR 8,500,000</div>
+                    <div style="font-size: 11px; color: var(--pending); margin-top: 6px;">Balance auto-adjustment pending 85 Lakh clearance</div>
+                </div>
+
+                <div class="detail-group">
+                    <div class="detail-row"><span class="detail-label">Invoice / Ref</span><span style="color: var(--accent);">UBL-INV-85L-09</span></div>
+                    <div class="detail-row"><span class="detail-label">Account Title</span><span>Ghulam Mohayyudin</span></div>
+                    <div class="detail-row"><span class="detail-label">Bank Account</span><span>UBL (**** 5860)</span></div>
+                    <div class="detail-row"><span class="detail-label">Date & Time</span><span>Sep 9, 2026 - 12:15 PM</span></div>
+                    <div class="detail-row"><span class="detail-label">Sync Status</span><span style="color: var(--pending);">Pending Clearance</span></div>
+                </div>
+                <button class="btn-primary" onclick="showToast('Invoice downloaded successfully')">Download Invoice Receipt</button>
+            </div>
+
+            <!-- PAGE 3: BANKS -->
+            <div id="page-banks" class="page">
+                <div class="note-banner"><i class="fa-solid fa-circle-info"></i> All balances sync directly with your connected accounts.</div>
+                
+                <div class="bank-card-ui bank-ubl">
+                    <div class="bank-top"><span class="bank-name">United Bank Limited (UBL)</span><span style="font-size:11px; background:rgba(255,255,255,0.2); padding:3px 8px; border-radius:10px;">Active</span></div>
+                    <div class="bank-number">**** 5860</div>
+                    <div class="bank-footer-row">
+                        <div><div class="bank-balance-lbl">Available Balance</div><div class="bank-balance-amt">PKR 8,425,000</div></div>
+                        <div style="font-size: 11px; color: #ffd8b1;" onclick="switchNavTarget('transaction')">Pending: 85 Lakh</div>
+                    </div>
+                </div>
+
+                <div class="bank-card-ui bank-hbl">
+                    <div class="bank-top"><span class="bank-name">Habib Bank Limited (HBL)</span><span style="font-size:11px; background:rgba(255,255,255,0.2); padding:3px 8px; border-radius:10px;">Active</span></div>
+                    <div class="bank-number">**** 9124</div>
+                    <div class="bank-footer-row"><div><div class="bank-balance-lbl">Available Balance</div><div class="bank-balance-amt">PKR 148</div></div></div>
+                </div>
+
+                <div class="bank-card-ui bank-alfalah">
+                    <div class="bank-top"><span class="bank-name">Bank Alfalah</span><span style="font-size:11px; background:rgba(255,255,255,0.2); padding:3px 8px; border-radius:10px;">Active</span></div>
+                    <div class="bank-number">**** 3391</div>
+                    <div class="bank-footer-row"><div><div class="bank-balance-lbl">Available Balance</div><div class="bank-balance-amt">PKR 451,964</div></div></div>
+                </div>
+            </div>
+
+            <!-- PAGE 4: OVERVIEW -->
+            <div id="page-overview" class="page">
+                <div class="balance-card">
+                    <div class="label">Combined Net Worth</div>
+                    <div style="font-size: 26px; font-weight: 700; color: var(--accent);">PKR 10,152,112</div>
+                    <div style="font-size: 11px; color: var(--success); margin-top: 4px;"><i class="fa-solid fa-arrow-trend-up"></i> +4.8% this week</div>
+                </div>
+                <div class="detail-group">
+                    <div class="detail-row"><span class="detail-label">Crypto Holdings</span><span>PKR 1,275,000</span></div>
+                    <div class="detail-row"><span class="detail-label">UBL Account</span><span>PKR 8,425,000</span></div>
+                    <div class="detail-row"><span class="detail-label">HBL Account</span><span>PKR 148</span></div>
+                    <div class="detail-row"><span class="detail-label">Bank Alfalah</span><span>PKR 451,964</span></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav" id="bottom-nav" style="display: none;">
+            <button class="nav-item active" onclick="switchNavTarget('wallet', this)"><i class="fa-solid fa-house"></i><span>Home</span></button>
+            <button class="nav-item" onclick="switchNavTarget('transaction', this)"><i class="fa-solid fa-list-check"></i><span>Transactions</span></button>
+            <button class="nav-item" onclick="switchNavTarget('banks', this)"><i class="fa-solid fa-building-columns"></i><span>Banks</span></button>
+            <button class="nav-item" onclick="switchNavTarget('overview', this)"><i class="fa-solid fa-chart-pie"></i><span>Overview</span></button>
+        </nav>
+
+    </div>
+
+    <div id="toast">Action completed successfully</div>
+
+    <script>
+        function switchPageDirect(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById('page-' + pageId);
+            if(target) target.classList.add('active');
+        }
+
+        function executeLogin() {
+            const u = document.getElementById('login-user').value.trim();
+            const p = document.getElementById('login-pass').value.trim();
+            if(u && p) {
+                forceDirectAccess();
+            } else {
+                showToast("Please enter username and password");
+            }
+        }
+
+        function executeRegister() {
+            const name = document.getElementById('reg-name').value.trim();
+            const u = document.getElementById('reg-user').value.trim();
+            const p = document.getElementById('reg-pass').value.trim();
+            if(name && u && p) {
+                forceDirectAccess();
+                showToast("Account created successfully!");
+            } else {
+                showToast("Please fill in all registration fields");
+            }
+        }
+
+        function forceDirectAccess() {
+            document.getElementById('app-header').style.display = 'flex';
+            document.getElementById('bottom-nav').style.display = 'flex';
+            
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-wallet').classList.add('active');
+            showToast("Welcome, Ghulam Mohayyudin!");
+        }
+
+        function logoutUser() {
+            document.getElementById('app-header').style.display = 'none';
+            document.getElementById('bottom-nav').style.display = 'none';
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-login').classList.add('active');
+            showToast("Logged out successfully");
+        }
+
+        function switchNavTarget(pageId, navEl) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+
+            if(navEl) {
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                navEl.classList.add('active');
+            } else {
+                const map = { 'wallet': 0, 'transaction': 1, 'banks': 2, 'overview': 3 };
+                const items = document.querySelectorAll('.nav-item');
+                if(map[pageId] !== undefined) {
+                    items.forEach(n => n.classList.remove('active'));
+                    items[map[pageId]].classList.add('active');
+                }
+            }
+            document.querySelector('.app-content').scrollTop = 0;
+        }
+
+        function switchTab(e, tabId) {
+            const header = e.target.parentElement;
+            header.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+
+            const container = header.nextElementSibling.parentElement;
+            container.querySelectorAll('.tab-pane').forEach(tp => tp.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function copyAddress() {
+            navigator.clipboard.writeText("0x71C92a8Bf41e49e2");
+            showToast("Wallet address copied!");
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById("toast");
+            t.innerText = msg;
+            t.className = "show";
+            setTimeout(() => { t.className = ""; }, 2500);
+        }
+    </script>
+</body>
+</html>
