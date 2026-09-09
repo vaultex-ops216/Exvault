@@ -358,57 +358,187 @@
         .item-sub { font-size: 12px; color: var(--text-secondary); }
         .item-right { text-align: right; }
 
-        /* TX & BANKS */
-        .tx-status-banner {
-            text-align: center;
-            padding: 20px 0;
-            border-bottom: 1px solid var(--border-color);
+        /* PROFESSIONAL INVOICE STYLES */
+        .invoice-card {
+            background: linear-gradient(145deg, #1e1e36, #161628);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 22px;
             margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
 
-        .status-badge {
-            display: inline-block;
-            padding: 6px 14px;
+        .invoice-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+        }
+
+        .invoice-brand {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .invoice-brand span {
+            color: var(--accent);
+        }
+
+        .invoice-status-pill {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--pending);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 5px 12px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
-            margin-bottom: 10px;
         }
-        .status-badge.success { background: rgba(16, 185, 129, 0.15); color: var(--success); }
-        .status-badge.pending { background: rgba(245, 158, 11, 0.15); color: var(--pending); }
 
-        .detail-group {
-            background: rgba(255, 255, 255, 0.02);
+        .invoice-amount-box {
+            text-align: center;
+            background: rgba(255,255,255,0.02);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
+            border-radius: 14px;
             padding: 16px;
             margin-bottom: 16px;
         }
-        .detail-row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.04); font-size: 13px;
-        }
-        .detail-label { color: var(--text-secondary); }
 
+        .invoice-amount-box .lbl {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .invoice-amount-box .val {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .invoice-meta-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .meta-cell {
+            background: rgba(255,255,255,0.01);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .meta-cell .m-lbl {
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+
+        .meta-cell .m-val {
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .clearance-warning {
+            background: rgba(245, 158, 11, 0.08);
+            border-left: 3px solid var(--pending);
+            padding: 10px 12px;
+            font-size: 11px;
+            color: #ffdeaa;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        /* BANKS */
         .bank-card-ui {
-            border-radius: 18px; padding: 20px; color: white; margin-bottom: 16px;
+            border-radius: 18px; padding: 20px; color: white; margin-bottom: 16px; position: relative;
         }
         .bank-ubl { background: var(--ubl-bg); }
         .bank-hbl { background: var(--hbl-bg); }
         .bank-alfalah { background: var(--alfalah-bg); }
 
-        .bank-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .bank-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .bank-name { font-size: 15px; font-weight: 700; }
-        .bank-number { font-size: 14px; font-family: monospace; margin-bottom: 14px; }
+        .bank-number { font-size: 15px; font-family: monospace; letter-spacing: 1px; margin-bottom: 12px; }
         .bank-footer-row { display: flex; justify-content: space-between; align-items: flex-end; }
         .bank-balance-lbl { font-size: 11px; opacity: 0.8; }
         .bank-balance-amt { font-size: 17px; font-weight: 700; }
+        
+        .bank-note {
+            font-size: 10px;
+            background: rgba(0,0,0,0.25);
+            padding: 6px 10px;
+            border-radius: 8px;
+            margin-top: 12px;
+            color: #ffd8b1;
+            border: 1px dashed rgba(255,255,255,0.2);
+        }
 
-        .note-banner {
-            background: rgba(246, 133, 27, 0.08);
-            border: 1px dashed rgba(246, 133, 27, 0.4);
-            padding: 12px; border-radius: 14px; font-size: 12px; color: #ffd8b1; margin-bottom: 16px;
+        .add-bank-btn {
+            width: 100%;
+            background: transparent;
+            border: 2px dashed var(--border-color);
+            color: var(--text-secondary);
+            border-radius: 16px;
+            padding: 14px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+        }
+        .add-bank-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(246, 133, 27, 0.03);
+        }
+
+        /* MODAL FOR ADDING BANK / CARD */
+        .modal-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 10, 15, 0.85);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            width: 100%;
+            padding: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+        }
+        .modal-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-close {
+            background: none; border: none; color: var(--text-secondary); font-size: 16px; cursor: pointer;
         }
 
         #toast {
@@ -444,7 +574,7 @@
         <!-- Content Container -->
         <div class="app-content" id="app-content-container">
 
-            <!-- LOGIN PAGE -->
+            <!-- LOGIN PAGE (Empty by default) -->
             <div id="page-login" class="page active">
                 <div class="auth-container">
                     <div class="auth-logo">
@@ -455,11 +585,11 @@
                     <div>
                         <div class="form-group">
                             <label>Username</label>
-                            <input type="text" id="login-user" class="form-input" value="Mohayyu78">
+                            <input type="text" id="login-user" class="form-input" placeholder="Enter username">
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input type="password" id="login-pass" class="form-input" value="Mohayyu@78">
+                            <input type="password" id="login-pass" class="form-input" placeholder="Enter password">
                         </div>
                         <button type="button" class="btn-primary" onclick="executeLogin()">Sign In</button>
                         <button type="button" class="btn-secondary-action" onclick="forceDirectAccess()">🚀 Direct Bypass (Instant Open)</button>
@@ -546,48 +676,84 @@
                 </div>
             </div>
 
-            <!-- PAGE 2: TRANSACTION DETAIL -->
+            <!-- PAGE 2: PROFESSIONAL TRANSACTION / INVOICE -->
             <div id="page-transaction" class="page">
-                <div class="tx-status-banner">
-                    <div class="status-badge pending">Pending</div>
-                    <div style="font-size: 24px; font-weight: 700;">PKR 8,500,000</div>
-                    <div style="font-size: 11px; color: var(--pending); margin-top: 6px;">Balance auto-adjustment pending 85 Lakh clearance</div>
-                </div>
+                <div class="invoice-card">
+                    <div class="invoice-header-top">
+                        <div class="invoice-brand">VaultEx <span>Invoice</span></div>
+                        <div class="invoice-status-pill">Pending Clearance</div>
+                    </div>
 
-                <div class="detail-group">
-                    <div class="detail-row"><span class="detail-label">Invoice / Ref</span><span style="color: var(--accent);">UBL-INV-85L-09</span></div>
-                    <div class="detail-row"><span class="detail-label">Account Title</span><span>Ghulam Mohayyudin</span></div>
-                    <div class="detail-row"><span class="detail-label">Bank Account</span><span>UBL (**** 5860)</span></div>
-                    <div class="detail-row"><span class="detail-label">Date & Time</span><span>Sep 9, 2026 - 12:15 PM</span></div>
-                    <div class="detail-row"><span class="detail-label">Sync Status</span><span style="color: var(--pending);">Pending Clearance</span></div>
+                    <div class="invoice-amount-box">
+                        <div class="lbl">Total Settlement Amount</div>
+                        <div class="val">PKR 8,500,000</div>
+                    </div>
+
+                    <div class="invoice-meta-grid">
+                        <div class="meta-cell">
+                            <div class="m-lbl">Invoice Reference</div>
+                            <div class="m-val" style="color:var(--accent);">UBL-INV-85L-09</div>
+                        </div>
+                        <div class="meta-cell">
+                            <div class="m-lbl">Account Title</div>
+                            <div class="m-val">Ghulam Mohayyudin</div>
+                        </div>
+                        <div class="meta-cell">
+                            <div class="m-lbl">Target Bank</div>
+                            <div class="m-val">UBL (**** 3372)</div>
+                        </div>
+                        <div class="meta-cell">
+                            <div class="m-lbl">Date & Time</div>
+                            <div class="m-val">Sep 9, 2026</div>
+                        </div>
+                    </div>
+
+                    <div class="clearance-warning">
+                        <i class="fa-solid fa-triangle-exclamation"></i> <strong>Note:</strong> Balance will be adjusted in your account within 7 to 10 working days.
+                    </div>
+
+                    <button class="btn-primary" onclick="showToast('Official invoice PDF downloaded')"><i class="fa-solid fa-download"></i> Download Secure Receipt</button>
                 </div>
-                <button class="btn-primary" onclick="showToast('Invoice downloaded successfully')">Download Invoice Receipt</button>
             </div>
 
             <!-- PAGE 3: BANKS -->
             <div id="page-banks" class="page">
-                <div class="note-banner"><i class="fa-solid fa-circle-info"></i> All balances sync directly with your connected accounts.</div>
-                
+                <button class="add-bank-btn" onclick="toggleAddBankModal(true)">
+                    <i class="fa-solid fa-plus-circle"></i> Add New Bank / Credit Card
+                </button>
+
                 <div class="bank-card-ui bank-ubl">
                     <div class="bank-top"><span class="bank-name">United Bank Limited (UBL)</span><span style="font-size:11px; background:rgba(255,255,255,0.2); padding:3px 8px; border-radius:10px;">Active</span></div>
-                    <div class="bank-number">**** 5860</div>
+                    <div class="bank-number">**** **** **** 3372</div>
                     <div class="bank-footer-row">
                         <div><div class="bank-balance-lbl">Available Balance</div><div class="bank-balance-amt">PKR 8,425,000</div></div>
-                        <div style="font-size: 11px; color: #ffd8b1;" onclick="switchNavTarget('transaction')">Pending: 85 Lakh</div>
+                    </div>
+                    <div class="bank-note">
+                        <i class="fa-solid fa-circle-info"></i> Note: Balance will be adjusted in your account within 7 to 10 working days.
                     </div>
                 </div>
 
                 <div class="bank-card-ui bank-hbl">
                     <div class="bank-top"><span class="bank-name">Habib Bank Limited (HBL)</span><span style="font-size:11px; background:rgba(255,255,255,0.2); padding:3px 8px; border-radius:10px;">Active</span></div>
-                    <div class="bank-number">**** 9124</div>
-                    <div class="bank-footer-row"><div><div class="bank-balance-lbl">Available Balance</div><div class="bank-balance-amt">PKR 148</div></div></div>
+                    <div class="bank-number">**** **** **** 1599</div>
+                    <div class="bank-footer-row">
+                        <div><div class="bank-balance-lbl">Available Balance</div><div class="bank-balance-amt">PKR 148</div></div>
+                    </div>
                 </div>
 
                 <div class="bank-card-ui bank-alfalah">
                     <div class="bank-top"><span class="bank-name">Bank Alfalah</span><span style="font-size:11px; background:rgba(255,255,255,0.2); padding:3px 8px; border-radius:10px;">Active</span></div>
-                    <div class="bank-number">**** 3391</div>
-                    <div class="bank-footer-row"><div><div class="bank-balance-lbl">Available Balance</div><div class="bank-balance-amt">PKR 451,964</div></div></div>
+                    <div class="bank-number">**** **** **** 1801</div>
+                    <div class="bank-footer-row">
+                        <div><div class="bank-balance-lbl">Available Balance</div><div class="bank-balance-amt">PKR 451,964</div></div>
+                    </div>
+                    <div class="bank-note">
+                        <i class="fa-solid fa-circle-info"></i> Note: Balance will be adjusted in your account within 7 to 10 working days.
+                    </div>
                 </div>
+
+                <!-- Dynamically Added Cards List Container -->
+                <div id="extra-banks-container"></div>
             </div>
 
             <!-- PAGE 4: OVERVIEW -->
@@ -597,14 +763,43 @@
                     <div style="font-size: 26px; font-weight: 700; color: var(--accent);">PKR 10,152,112</div>
                     <div style="font-size: 11px; color: var(--success); margin-top: 4px;"><i class="fa-solid fa-arrow-trend-up"></i> +4.8% this week</div>
                 </div>
-                <div class="detail-group">
-                    <div class="detail-row"><span class="detail-label">Crypto Holdings</span><span>PKR 1,275,000</span></div>
-                    <div class="detail-row"><span class="detail-label">UBL Account</span><span>PKR 8,425,000</span></div>
-                    <div class="detail-row"><span class="detail-label">HBL Account</span><span>PKR 148</span></div>
-                    <div class="detail-row"><span class="detail-label">Bank Alfalah</span><span>PKR 451,964</span></div>
+                <div class="detail-group" style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px;">
+                    <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:13px;"><span style="color:var(--text-secondary);">Crypto Holdings</span><span>PKR 1,275,000</span></div>
+                    <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:13px;"><span style="color:var(--text-secondary);">UBL (**** 3372)</span><span>PKR 8,425,000</span></div>
+                    <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:13px;"><span style="color:var(--text-secondary);">HBL (**** 1599)</span><span>PKR 148</span></div>
+                    <div style="display:flex; justify-content:space-between; padding:10px 0; font-size:13px;"><span style="color:var(--text-secondary);">Bank Alfalah (**** 1801)</span><span>PKR 451,964</span></div>
                 </div>
             </div>
 
+        </div>
+
+        <!-- Add Bank / Credit Card Modal -->
+        <div class="modal-overlay" id="add-bank-modal">
+            <div class="modal-box">
+                <div class="modal-title">
+                    <span>Add Bank or Credit Card</span>
+                    <button class="modal-close" onclick="toggleAddBankModal(false)"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="form-group">
+                    <label>Bank Name / Institution</label>
+                    <input type="text" id="new-bank-name" class="form-input" placeholder="e.g. Meezan Bank / Visa Card">
+                </div>
+                <div class="form-group">
+                    <label>Card / Account Number</label>
+                    <input type="text" id="new-bank-num" class="form-input" placeholder="4352 **** **** 8821">
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <div class="form-group">
+                        <label>Expiry Date</label>
+                        <input type="text" id="new-bank-exp" class="form-input" placeholder="MM/YY">
+                    </div>
+                    <div class="form-group">
+                        <label>CVV / PIN</label>
+                        <input type="password" id="new-bank-cvv" class="form-input" placeholder="***">
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="saveNewBankCard()">Save & Link Card</button>
+            </div>
         </div>
 
         <!-- Bottom Navigation -->
@@ -691,6 +886,48 @@
             const container = header.nextElementSibling.parentElement;
             container.querySelectorAll('.tab-pane').forEach(tp => tp.classList.remove('active'));
             document.getElementById(tabId).classList.add('active');
+        }
+
+        function toggleAddBankModal(show) {
+            const modal = document.getElementById('add-bank-modal');
+            if(show) {
+                modal.classList.add('open');
+            } else {
+                modal.classList.remove('open');
+            }
+        }
+
+        function saveNewBankCard() {
+            const name = document.getElementById('new-bank-name').value.trim();
+            const num = document.getElementById('new-bank-num').value.trim();
+            const exp = document.getElementById('new-bank-exp').value.trim();
+            const cvv = document.getElementById('new-bank-cvv').value.trim();
+
+            if(name && num && exp && cvv) {
+                const last4 = num.slice(-4) || '****';
+                const container = document.getElementById('extra-banks-container');
+                
+                const cardHTML = `
+                    <div class="bank-card-ui" style="background: linear-gradient(135deg, #2a2a40, #1a1a2e);">
+                        <div class="bank-top"><span class="bank-name">${name}</span><span style="font-size:11px; background:rgba(255,255,255,0.2); padding:3px 8px; border-radius:10px;">Linked Card</span></div>
+                        <div class="bank-number">**** **** **** ${last4}</div>
+                        <div class="bank-footer-row">
+                            <div><div class="bank-balance-lbl">Exp: ${exp}</div><div class="bank-balance-amt">PKR 0.00</div></div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
+                toggleAddBankModal(false);
+                showToast("New bank / card linked successfully!");
+                
+                // Clear inputs
+                document.getElementById('new-bank-name').value = '';
+                document.getElementById('new-bank-num').value = '';
+                document.getElementById('new-bank-exp').value = '';
+                document.getElementById('new-bank-cvv').value = '';
+            } else {
+                showToast("Please fill in all card details");
+            }
         }
 
         function copyAddress() {
